@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiCollectionViewLayout.Pages.MyTestPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:datamodels="clr-namespace:MauiCollectionViewLayout.DataModels"
+    xmlns:viewmodels="clr-namespace:MauiCollectionViewLayout.PageViewModels"
+    Title="MyTestPage"
+    x:DataType="viewmodels:MyTestPageViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Label
+            Grid.Row="0"
+            BackgroundColor="White"
+            HorizontalOptions="FillAndExpand"
+            HorizontalTextAlignment="Center"
+            Text="Some Header"
+            TextColor="Black" />
+
+
+        <CollectionView
+            Grid.Row="1"
+            Margin="8"
+            BackgroundColor="Yellow"
+            ItemsSource="{Binding ScaleList}"
+            VerticalOptions="FillAndExpand">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout
+                    HorizontalItemSpacing="4"
+                    Orientation="Vertical"
+                    Span="{Binding ScaleList.Count}"
+                    VerticalItemSpacing="4" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="datamodels:Scale">
+                    <Grid RowDefinitions="Auto,*">
+                        <Label
+                            Grid.Row="0"
+                            Padding="4"
+                            BackgroundColor="Green"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding Label}" />
+                        <CollectionView
+                            Grid.Row="1"
+                            BackgroundColor="Blue"
+                            ItemsSource="{Binding ValueList}"
+                            VerticalOptions="FillAndExpand">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="4" Orientation="Vertical" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="datamodels:MyValue">
+                                    <Frame
+                                        Padding="0"
+                                        BackgroundColor="Aquamarine"
+                                        CornerRadius="0">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MyTestPageViewModel}}, Path=ValuePressedCommand}" CommandParameter="{Binding .}" />
+                                        </Frame.GestureRecognizers>
+                                        <Grid
+                                            Margin="4"
+                                            BackgroundColor="Red"
+                                            ColumnDefinitions="Auto,*">
+                                            <Image
+                                                Grid.Column="0"
+                                                Margin="4"
+                                                BackgroundColor="White"
+                                                HeightRequest="24"
+                                                WidthRequest="24" />
+
+                                            <Label
+                                                Grid.Column="1"
+                                                Margin="4"
+                                                Text="{Binding Name}"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label
+            Grid.Row="2"
+            BackgroundColor="White"
+            HorizontalOptions="FillAndExpand"
+            HorizontalTextAlignment="Center"
+            Text="{Binding FeedbackText}"
+            TextColor="Black" />
+    </Grid>
+</ContentPage>
